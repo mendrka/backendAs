@@ -1,0 +1,344 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-03-20T09:00:00.000Z",
+  "concepts": [
+    {
+      "conceptTag": "article_usage",
+      "errorTag": "article_omission",
+      "skills": ["ECRIRE", "LIRE"],
+      "supportedLevels": ["A1", "A2", "B1", "B2", "C1", "C2"],
+      "difficultyBase": 32,
+      "remediationTipFr": "Memorise toujours le nom avec son article: der, die, das.",
+      "remediationTipDe": "Lerne jedes Nomen immer mit Artikel: der, die, das.",
+      "keywords": [
+        { "de": "der Markt", "fr": "le marche" },
+        { "de": "die Tomate", "fr": "la tomate" },
+        { "de": "das Brot", "fr": "le pain" },
+        { "de": "der Preis", "fr": "le prix" },
+        { "de": "die Tasche", "fr": "le sac" }
+      ],
+      "sentences": [
+        { "de": "Ich kaufe eine Tomate.", "fr": "J achete une tomate." },
+        { "de": "Der Markt ist heute voll.", "fr": "Le marche est plein aujourd hui." },
+        { "de": "Das Brot ist frisch.", "fr": "Le pain est frais." },
+        { "de": "Die Tasche ist neu.", "fr": "Le sac est nouveau." },
+        { "de": "Der Preis ist fair.", "fr": "Le prix est correct." },
+        { "de": "Ich nehme das Brot.", "fr": "Je prends le pain." }
+      ]
+    },
+    {
+      "conceptTag": "noun_gender",
+      "errorTag": "gender_mismatch",
+      "skills": ["ECRIRE", "LIRE"],
+      "supportedLevels": ["A1", "A2", "B1", "B2", "C1", "C2"],
+      "difficultyBase": 40,
+      "remediationTipFr": "Repere les groupes de noms et revois leur genre avec des couleurs.",
+      "remediationTipDe": "Ordne Nomen nach Geschlecht und wiederhole sie farblich.",
+      "keywords": [
+        { "de": "der Zug", "fr": "le train" },
+        { "de": "die Stadt", "fr": "la ville" },
+        { "de": "das Ticket", "fr": "le billet" },
+        { "de": "der Kaffee", "fr": "le cafe" },
+        { "de": "die Schule", "fr": "l ecole" }
+      ],
+      "sentences": [
+        { "de": "Der Zug kommt spaet.", "fr": "Le train arrive en retard." },
+        { "de": "Die Stadt ist gross.", "fr": "La ville est grande." },
+        { "de": "Das Ticket ist teuer.", "fr": "Le billet est cher." },
+        { "de": "Ich trinke den Kaffee.", "fr": "Je bois le cafe." },
+        { "de": "Die Schule ist nah.", "fr": "L ecole est proche." },
+        { "de": "Wir sehen den Zug.", "fr": "Nous voyons le train." }
+      ]
+    },
+    {
+      "conceptTag": "word_order_v2",
+      "errorTag": "word_order_v2",
+      "skills": ["ECRIRE", "PARLER"],
+      "supportedLevels": ["A1", "A2", "B1", "B2", "C1", "C2"],
+      "difficultyBase": 52,
+      "remediationTipFr": "En principal, le verbe conjugue reste en 2e position.",
+      "remediationTipDe": "Im Hauptsatz steht das konjugierte Verb auf Position 2.",
+      "keywords": [
+        { "de": "heute", "fr": "aujourd hui" },
+        { "de": "morgen", "fr": "demain" },
+        { "de": "danach", "fr": "ensuite" },
+        { "de": "zu Hause", "fr": "a la maison" },
+        { "de": "im Bus", "fr": "dans le bus" }
+      ],
+      "sentences": [
+        { "de": "Heute gehe ich in die Schule.", "fr": "Aujourd hui, je vais a l ecole." },
+        { "de": "Morgen arbeite ich zu Hause.", "fr": "Demain, je travaille a la maison." },
+        { "de": "Dann kauft er Brot.", "fr": "Ensuite, il achete du pain." },
+        { "de": "Im Bus lese ich ein Buch.", "fr": "Dans le bus, je lis un livre." },
+        { "de": "Danach trinken wir Kaffee.", "fr": "Apres cela, nous buvons du cafe." },
+        { "de": "Heute lernt sie Deutsch.", "fr": "Aujourd hui, elle apprend l allemand." }
+      ]
+    },
+    {
+      "conceptTag": "cases_motion",
+      "errorTag": "case_akk_dativ",
+      "skills": ["ECRIRE", "LIRE"],
+      "supportedLevels": ["A1", "A2", "B1", "B2", "C1", "C2"],
+      "difficultyBase": 60,
+      "remediationTipFr": "Mouvement vers un lieu: Akkusativ. Position stable: Dativ.",
+      "remediationTipDe": "Bewegung: Akkusativ. Position: Dativ.",
+      "keywords": [
+        { "de": "in den Park", "fr": "dans le parc" },
+        { "de": "im Park", "fr": "dans le parc (position)" },
+        { "de": "auf den Markt", "fr": "au marche" },
+        { "de": "am Markt", "fr": "au marche (position)" },
+        { "de": "in die Stadt", "fr": "en ville" }
+      ],
+      "sentences": [
+        { "de": "Ich gehe in den Park.", "fr": "Je vais au parc." },
+        { "de": "Ich bin im Park.", "fr": "Je suis au parc." },
+        { "de": "Wir gehen auf den Markt.", "fr": "Nous allons au marche." },
+        { "de": "Wir sind am Markt.", "fr": "Nous sommes au marche." },
+        { "de": "Sie faehrt in die Stadt.", "fr": "Elle va en ville." },
+        { "de": "Sie wartet in der Stadt.", "fr": "Elle attend en ville." }
+      ]
+    },
+    {
+      "conceptTag": "separable_verbs",
+      "errorTag": "separable_verb",
+      "skills": ["PARLER", "ECRIRE"],
+      "supportedLevels": ["A1", "A2", "B1", "B2", "C1", "C2"],
+      "difficultyBase": 64,
+      "remediationTipFr": "Dans une phrase simple, le prefixe separable part a la fin.",
+      "remediationTipDe": "Im Hauptsatz steht das trennbare Praefix am Satzende.",
+      "keywords": [
+        { "de": "aufstehen", "fr": "se lever" },
+        { "de": "einkaufen", "fr": "faire les courses" },
+        { "de": "anrufen", "fr": "appeler" },
+        { "de": "mitkommen", "fr": "venir avec" },
+        { "de": "zurückkommen", "fr": "revenir" }
+      ],
+      "sentences": [
+        { "de": "Ich stehe um sechs Uhr auf.", "fr": "Je me leve a six heures." },
+        { "de": "Wir kaufen heute ein.", "fr": "Nous faisons les courses aujourd hui." },
+        { "de": "Er ruft seine Mutter an.", "fr": "Il appelle sa mere." },
+        { "de": "Kommst du morgen mit?", "fr": "Tu viens avec demain ?" },
+        { "de": "Sie kommt spaet zurueck.", "fr": "Elle revient tard." },
+        { "de": "Ich rufe dich morgen an.", "fr": "Je t appelle demain." }
+      ]
+    },
+    {
+      "conceptTag": "umlaut_pronunciation",
+      "errorTag": "umlaut_omission",
+      "skills": ["ECOUTER", "PARLER"],
+      "supportedLevels": ["A1", "A2", "B1", "B2", "C1", "C2"],
+      "difficultyBase": 46,
+      "remediationTipFr": "Umlauts changent le sens: schon != schoen.",
+      "remediationTipDe": "Umlaute aendern die Bedeutung: schon != schoen.",
+      "keywords": [
+        { "de": "fuenf", "fr": "cinq" },
+        { "de": "schoen", "fr": "beau" },
+        { "de": "Tuer", "fr": "porte" },
+        { "de": "Mueller", "fr": "Muller" },
+        { "de": "koennen", "fr": "pouvoir" }
+      ],
+      "sentences": [
+        { "de": "Ich moechte fuenf Brote.", "fr": "Je voudrais cinq pains." },
+        { "de": "Das ist schoen.", "fr": "C est beau." },
+        { "de": "Die Tuer ist offen.", "fr": "La porte est ouverte." },
+        { "de": "Wir koennen jetzt gehen.", "fr": "Nous pouvons partir maintenant." },
+        { "de": "Frau Mueller kommt spaeter.", "fr": "Madame Muller arrive plus tard." },
+        { "de": "Der Preis ist nicht schoen.", "fr": "Le prix n est pas agreable." }
+      ]
+    },
+    {
+      "conceptTag": "relative_clauses",
+      "errorTag": "word_order_v2",
+      "skills": ["LIRE", "ECRIRE"],
+      "supportedLevels": ["B1", "B2", "C1", "C2"],
+      "difficultyBase": 72,
+      "remediationTipFr": "Dans une relative, le verbe est en fin de proposition.",
+      "remediationTipDe": "Im Relativsatz steht das Verb am Ende.",
+      "keywords": [
+        { "de": "der Mann, der hier wohnt", "fr": "l homme qui habite ici" },
+        { "de": "die Frau, die Deutsch lernt", "fr": "la femme qui apprend l allemand" },
+        { "de": "das Buch, das ich lese", "fr": "le livre que je lis" },
+        { "de": "die Stadt, in der ich lebe", "fr": "la ville ou je vis" },
+        { "de": "das Kind, mit dem ich spreche", "fr": "l enfant avec qui je parle" }
+      ],
+      "sentences": [
+        { "de": "Der Mann, der hier wohnt, ist nett.", "fr": "L homme qui habite ici est sympa." },
+        { "de": "Ich kenne die Frau, die Deutsch lernt.", "fr": "Je connais la femme qui apprend l allemand." },
+        { "de": "Das Buch, das ich lese, ist spannend.", "fr": "Le livre que je lis est passionnant." },
+        { "de": "Die Stadt, in der ich lebe, ist ruhig.", "fr": "La ville ou je vis est calme." },
+        { "de": "Das Kind, mit dem ich spreche, ist freundlich.", "fr": "L enfant avec qui je parle est aimable." },
+        { "de": "Die Aufgabe, die wir machen, ist schwer.", "fr": "L exercice que nous faisons est difficile." }
+      ]
+    },
+    {
+      "conceptTag": "konjunktiv_ii",
+      "errorTag": "word_order_v2",
+      "skills": ["PARLER", "ECRIRE"],
+      "supportedLevels": ["B1", "B2", "C1", "C2"],
+      "difficultyBase": 78,
+      "remediationTipFr": "Konjunktiv II sert a exprimer la politesse et l hypothese.",
+      "remediationTipDe": "Konjunktiv II drueckt Hoeflichkeit und Irrealitaet aus.",
+      "keywords": [
+        { "de": "ich wuerde gern", "fr": "je voudrais" },
+        { "de": "koenntest du", "fr": "pourrais-tu" },
+        { "de": "ich haette", "fr": "j aurais" },
+        { "de": "wir waeren", "fr": "nous serions" },
+        { "de": "es waere besser", "fr": "ce serait mieux" }
+      ],
+      "sentences": [
+        { "de": "Ich wuerde gern in Deutschland arbeiten.", "fr": "Je voudrais travailler en Allemagne." },
+        { "de": "Koenntest du mir helfen?", "fr": "Pourrais-tu m aider ?" },
+        { "de": "Ich haette mehr Zeit gebraucht.", "fr": "J aurais eu besoin de plus de temps." },
+        { "de": "Wir waeren bereit fuer das Gespraech.", "fr": "Nous serions prets pour l entretien." },
+        { "de": "Es waere besser, frueher zu kommen.", "fr": "Ce serait mieux de venir plus tot." },
+        { "de": "Ich wuerde das anders formulieren.", "fr": "Je formulerais cela autrement." }
+      ]
+    },
+    {
+      "conceptTag": "passive_voice",
+      "errorTag": "case_akk_dativ",
+      "skills": ["LIRE", "ECRIRE"],
+      "supportedLevels": ["B2", "C1", "C2"],
+      "difficultyBase": 84,
+      "remediationTipFr": "Au passif, l accent est sur l action et non l agent.",
+      "remediationTipDe": "Im Passiv steht die Handlung im Fokus.",
+      "keywords": [
+        { "de": "wird gebaut", "fr": "est construit" },
+        { "de": "wurde erklaert", "fr": "a ete explique" },
+        { "de": "ist gemacht worden", "fr": "a ete fait" },
+        { "de": "wird geprueft", "fr": "est verifie" },
+        { "de": "wird organisiert", "fr": "est organise" }
+      ],
+      "sentences": [
+        { "de": "Die Bruecke wird gebaut.", "fr": "Le pont est construit." },
+        { "de": "Die Regel wurde erklaert.", "fr": "La regle a ete expliquee." },
+        { "de": "Der Test wird geprueft.", "fr": "Le test est verifie." },
+        { "de": "Das Treffen wird organisiert.", "fr": "La reunion est organisee." },
+        { "de": "Die Aufgabe ist gemacht worden.", "fr": "L exercice a ete fait." },
+        { "de": "Der Bericht wird morgen geschrieben.", "fr": "Le rapport sera ecrit demain." }
+      ]
+    },
+    {
+      "conceptTag": "nominalization",
+      "errorTag": "article_omission",
+      "skills": ["LIRE", "ECRIRE"],
+      "supportedLevels": ["C1", "C2"],
+      "difficultyBase": 90,
+      "remediationTipFr": "Les nominalisations demandent une maitrise des articles et des cas.",
+      "remediationTipDe": "Nominalisierungen brauchen sichere Artikel- und Kasuskenntnisse.",
+      "keywords": [
+        { "de": "die Entscheidung", "fr": "la decision" },
+        { "de": "die Bewerbung", "fr": "la candidature" },
+        { "de": "die Vorbereitung", "fr": "la preparation" },
+        { "de": "das Lernen", "fr": "l apprentissage" },
+        { "de": "die Verbesserung", "fr": "l amelioration" }
+      ],
+      "sentences": [
+        { "de": "Die Entscheidung wurde schnell getroffen.", "fr": "La decision a ete prise rapidement." },
+        { "de": "Die Bewerbung braucht gute Vorbereitung.", "fr": "La candidature exige une bonne preparation." },
+        { "de": "Das Lernen braucht Geduld.", "fr": "L apprentissage demande de la patience." },
+        { "de": "Die Verbesserung ist deutlich sichtbar.", "fr": "L amelioration est clairement visible." },
+        { "de": "Die Vorbereitung auf das Gespraech war intensiv.", "fr": "La preparation a l entretien etait intensive." },
+        { "de": "Die Umsetzung der Strategie dauert.", "fr": "La mise en oeuvre de la strategie prend du temps." }
+      ]
+    },
+    {
+      "conceptTag": "style_register",
+      "errorTag": "word_order_v2",
+      "skills": ["PARLER", "ECRIRE", "LIRE"],
+      "supportedLevels": ["C2"],
+      "difficultyBase": 96,
+      "remediationTipFr": "Adapter le registre selon le contexte est essentiel au niveau C2.",
+      "remediationTipDe": "Registeranpassung je nach Kontext ist zentral auf C2.",
+      "keywords": [
+        { "de": "formell", "fr": "formel" },
+        { "de": "umgangssprachlich", "fr": "familier" },
+        { "de": "praezise", "fr": "precis" },
+        { "de": "neutral", "fr": "neutre" },
+        { "de": "differenziert", "fr": "nuance" }
+      ],
+      "sentences": [
+        { "de": "Sehr geehrte Damen und Herren, ich moechte mich bewerben.", "fr": "Mesdames, Messieurs, je souhaite postuler." },
+        { "de": "Hey, ich komme spaeter vorbei.", "fr": "Salut, je passe plus tard." },
+        { "de": "Die Argumentation ist praezise und differenziert.", "fr": "L argumentation est precise et nuancee." },
+        { "de": "Im offiziellen Schreiben waehle ich einen neutralen Ton.", "fr": "Dans un ecrit officiel, je choisis un ton neutre." },
+        { "de": "In der Diskussion passe ich den Stil an.", "fr": "Dans la discussion, j adapte le style." },
+        { "de": "Je nach Zielgruppe veraendert sich die Wortwahl deutlich.", "fr": "Selon le public, le choix lexical change nettement." }
+      ]
+    }
+  ],
+  "levelProfiles": {
+    "A1": {
+      "difficultyShift": -18,
+      "defaultTheme": "vie quotidienne",
+      "phraseBank": [
+        { "de": "Ich lerne Deutsch.", "fr": "J apprends l allemand." },
+        { "de": "Wie heisst du?", "fr": "Comment tu t appelles ?" },
+        { "de": "Ich komme aus Madagaskar.", "fr": "Je viens de Madagascar." },
+        { "de": "Guten Morgen!", "fr": "Bonjour !" },
+        { "de": "Das ist mein Brot.", "fr": "C est mon pain." },
+        { "de": "Ich gehe zum Markt.", "fr": "Je vais au marche." }
+      ]
+    },
+    "A2": {
+      "difficultyShift": -8,
+      "defaultTheme": "achats et transports",
+      "phraseBank": [
+        { "de": "Am Samstag kaufe ich Gemuese.", "fr": "Le samedi, j achete des legumes." },
+        { "de": "Danach gehe ich nach Hause.", "fr": "Apres cela, je rentre a la maison." },
+        { "de": "Der Bus kommt um acht Uhr.", "fr": "Le bus arrive a huit heures." },
+        { "de": "Ich moechte einen Kaffee.", "fr": "Je voudrais un cafe." },
+        { "de": "Wie viel kostet ein Kilo?", "fr": "Combien coute un kilo ?" },
+        { "de": "Heute arbeite ich laenger.", "fr": "Aujourd hui je travaille plus longtemps." }
+      ]
+    },
+    "B1": {
+      "difficultyShift": 0,
+      "defaultTheme": "vie sociale et travail",
+      "phraseBank": [
+        { "de": "Wenn ich Zeit habe, lese ich deutsche Artikel.", "fr": "Quand j ai le temps, je lis des articles allemands." },
+        { "de": "Im Gespraech achte ich auf die Verbposition.", "fr": "Dans la conversation, je fais attention a la position du verbe." },
+        { "de": "Ich versuche, ohne Hilfe zu sprechen.", "fr": "J essaie de parler sans aide." },
+        { "de": "Heute bespreche ich mein Ziel in Deutschland.", "fr": "Aujourd hui je parle de mon objectif en Allemagne." },
+        { "de": "Ich korrigiere meine Fehler nach jeder Aufgabe.", "fr": "Je corrige mes erreurs apres chaque exercice." },
+        { "de": "Ich kann einfache E-Mails auf Deutsch schreiben.", "fr": "Je peux ecrire des e-mails simples en allemand." }
+      ]
+    },
+    "B2": {
+      "difficultyShift": 10,
+      "defaultTheme": "argumentation et autonomie",
+      "phraseBank": [
+        { "de": "Obwohl der Text komplex ist, verstehe ich die Hauptidee.", "fr": "Bien que le texte soit complexe, je comprends l idee principale." },
+        { "de": "Im Alltag benoetige ich praezise Formulierungen.", "fr": "Au quotidien, j ai besoin de formulations precises." },
+        { "de": "Ich kann spontane Fragen differenziert beantworten.", "fr": "Je peux repondre a des questions spontanees de facon nuancee." },
+        { "de": "Bei Unsicherheit wiederhole ich die Grammatikregel.", "fr": "En cas d incertitude, je repete la regle de grammaire." },
+        { "de": "Ich vergleiche verschiedene Loesungen kritisch.", "fr": "Je compare differentes solutions de facon critique." },
+        { "de": "In Diskussionen strukturiere ich meine Argumente.", "fr": "En discussion, je structure mes arguments." }
+      ]
+    },
+    "C1": {
+      "difficultyShift": 18,
+      "defaultTheme": "academique et professionnel",
+      "phraseBank": [
+        { "de": "Im beruflichen Kontext formuliere ich praezise und nuanciert.", "fr": "Dans un contexte professionnel, je formule avec precision et nuance." },
+        { "de": "Meine Argumentation bleibt auch unter Zeitdruck koharent.", "fr": "Mon argumentation reste coherente meme sous pression." },
+        { "de": "Ich bewerte sprachliche Varianten je nach Register.", "fr": "J evalue les variantes linguistiques selon le registre." },
+        { "de": "Fehleranalysen helfen mir bei der gezielten Verbesserung.", "fr": "Les analyses d erreurs m aident a m ameliorer de facon ciblee." },
+        { "de": "Ich kann komplexe Sachverhalte klar zusammenfassen.", "fr": "Je peux resumer clairement des sujets complexes." },
+        { "de": "In Praesentationen passe ich Ton und Struktur an.", "fr": "Dans les presentations, j adapte le ton et la structure." }
+      ]
+    },
+    "C2": {
+      "difficultyShift": 24,
+      "defaultTheme": "maitrise stylistique",
+      "phraseBank": [
+        { "de": "Ich variiere meinen Stil situationsgerecht und zielgruppenspezifisch.", "fr": "Je varie mon style selon la situation et le public." },
+        { "de": "Selbst subtile Bedeutungsnuancen erfasse ich zuverlaessig.", "fr": "Je saisis de maniere fiable les nuances de sens subtiles." },
+        { "de": "Ich kann zwischen formellen und informellen Registern praezise wechseln.", "fr": "Je peux passer avec precision entre registres formels et informels." },
+        { "de": "Meine Sprachproduktion bleibt idiomatisch und flexibel.", "fr": "Ma production linguistique reste idiomatique et flexible." },
+        { "de": "Ich reflektiere Fehler als strategische Lernimpulse.", "fr": "Je traite les erreurs comme des leviers strategiques d apprentissage." },
+        { "de": "Auch in komplexen Debatten bleibe ich sprachlich kontrolliert.", "fr": "Meme dans des debats complexes, je reste linguistiquement maitrise." }
+      ]
+    }
+  }
+}

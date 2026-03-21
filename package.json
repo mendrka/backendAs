@@ -1,0 +1,41 @@
+{
+  "name": "eam-backend",
+  "version": "1.0.0",
+  "description": "Backend API - École d'Allemand pour Malgaches",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "predev": "prisma generate",
+    "dev": "nodemon server.js",
+    "prestart": "prisma generate",
+    "start": "node server.js",
+    "postinstall": "prisma generate",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:seed": "node prisma/seed.js",
+    "db:import-sqlite": "node prisma/migrateSqliteToMongo.js",
+    "db:import-sqlite:reset": "node prisma/migrateSqliteToMongo.js --reset",
+    "db:studio": "prisma studio",
+    "test:adaptive": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.10.0",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "socket.io": "^4.7.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3",
+    "prisma": "^5.10.0",
+    "sqlite3": "^6.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

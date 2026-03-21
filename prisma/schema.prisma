@@ -1,0 +1,242 @@
+// ── EAM — Schéma Prisma MongoDB ────────────────────────────
+// Base de données v2 : MongoDB Atlas via Prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// ── Utilisateur ────────────────────────────────────────────
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  prenom    String
+  nom       String
+  email     String   @unique
+  password  String   // hashé avec bcrypt
+  niveau    String   @default("A1")  // A1, A2, B1, B2, C1, C2
+  objectif  String   @default("autre") // ausbildung, aupair, fsj, bfd, etudes, autre
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  progressions     Progression[]
+  sprechenSessions SprechenSession[] @relation("SprechenUser")
+  sprechenPartners SprechenSession[] @relation("SprechenPartner")
+  chatMessages     ChatMessage[]
+  userStats        UserStats?
+  userBadges       UserBadge[]
+  adaptiveSessions AdaptiveSession[]
+  exerciseAttempts ExerciseAttempt[]
+  conceptStates    UserConceptState[]
+  errorProfiles    UserErrorProfile[]
+  directMessagesSent     DirectMessage[] @relation("DirectMessageSender")
+  directMessagesReceived DirectMessage[] @relation("DirectMessageRecipient")
+
+  @@map("users")
+}
+
+// ── Progression ────────────────────────────────────────────
+model Progression {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  leconId   String   // identifiant de la leçon (ex: "a1-1")
+  score     Int      @default(0)    // 0-100
+  complete  Boolean  @default(false)
+  xpEarned  Int      @default(0)
+  xpRequired Int     @default(100)
+  masteryScore Int   @default(0)
+  errorRate Int      @default(0)
+  revisionRequired Boolean @default(false)
+  unlockedAt DateTime?
+  lastAttemptAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, leconId])
+  @@map("progressions")
+}
+
+// ── Session Sprechen ───────────────────────────────────────
+model SprechenSession {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  partnerId String?  @db.ObjectId // null si session solo
+  niveau    String
+  score     Int      @default(0)
+  duree     Int      @default(0)    // secondes
+  exercices String?  // JSON stringifié
+  createdAt DateTime @default(now())
+
+  user    User  @relation("SprechenUser",    fields: [userId],    references: [id])
+  partner User? @relation("SprechenPartner", fields: [partnerId], references: [id])
+
+  @@map("sprechen_sessions")
+}
+
+// ── Message Chat ───────────────────────────────────────────
+model ChatMessage {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  canalId   String   // general, a1-a2, ausbildung, etc.
+  userId    String   @db.ObjectId
+  texte     String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([canalId, createdAt])
+  @@map("chat_messages")
+}
+
+model DirectMessage {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  senderId    String   @db.ObjectId
+  recipientId String   @db.ObjectId
+  texte       String
+  createdAt   DateTime @default(now())
+
+  sender    User @relation("DirectMessageSender", fields: [senderId], references: [id])
+  recipient User @relation("DirectMessageRecipient", fields: [recipientId], references: [id])
+
+  @@index([senderId, recipientId, createdAt])
+  @@index([recipientId, senderId, createdAt])
+  @@index([senderId, createdAt])
+  @@index([recipientId, createdAt])
+  @@map("direct_messages")
+}
+
+model UserStats {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @unique @db.ObjectId
+  xp            Int      @default(0)
+  level         Int      @default(1)
+  streakCurrent Int      @default(0)
+  streakBest    Int      @default(0)
+  badgesCount   Int      @default(0)
+  lastActivityDay String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("user_stats")
+}
+
+model UserBadge {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  badgeId    String
+  debloque   Boolean  @default(false)
+  debloqueAt DateTime?
+  vu         Boolean  @default(false)
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, badgeId])
+  @@map("user_badges")
+}
+
+model AdaptiveSession {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  niveau      String
+  objectif    String
+  mode        String   @default("free")
+  baseLessonId String?
+  status      String   @default("ACTIVE")
+  lessonPayload Json
+  nextIndex   Int      @default(0)
+  startedAt   DateTime @default(now())
+  endedAt     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user     User              @relation(fields: [userId], references: [id])
+  attempts ExerciseAttempt[]
+
+  @@index([userId, status, updatedAt])
+  @@map("adaptive_sessions")
+}
+
+model ExerciseAttempt {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String   @db.ObjectId
+  sessionId     String   @db.ObjectId
+  leconId       String
+  exerciceId    String
+  type          String
+  conceptTag    String
+  errorTag      String?
+  skill         String
+  correct       Boolean
+  userAnswer    String?
+  expectedAnswer String?
+  responseTimeMs Int     @default(0)
+  hintsUsed      Int     @default(0)
+  confidence     Int?
+  attemptScore   Int     @default(0)
+  xpAwarded      Int     @default(0)
+  correctionXp   Int     @default(0)
+  speedXp        Int     @default(0)
+  improvementXp  Int     @default(0)
+  completionXp   Int     @default(0)
+  createdAt      DateTime @default(now())
+
+  user    User            @relation(fields: [userId], references: [id])
+  session AdaptiveSession @relation(fields: [sessionId], references: [id])
+
+  @@index([userId, createdAt])
+  @@index([sessionId, createdAt])
+  @@index([conceptTag, errorTag])
+  @@map("exercise_attempts")
+}
+
+model UserConceptState {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  conceptTag  String
+  skill       String
+  masteryScore Int     @default(50)
+  volatility   Int     @default(0)
+  lastSeenAt   DateTime?
+  wrongStreak  Int     @default(0)
+  rightStreak  Int     @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, conceptTag, skill])
+  @@index([userId, masteryScore])
+  @@map("user_concept_states")
+}
+
+model UserErrorProfile {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String   @db.ObjectId
+  leconId            String
+  conceptTag         String
+  errorTag           String
+  count              Int      @default(0)
+  successStreak      Int      @default(0)
+  isFrequent         Boolean  @default(false)
+  lastUserAnswer     String?
+  lastExpectedAnswer String?
+  lastSeenAt         DateTime?
+  resolvedAt         DateTime?
+  nextReviewAt       DateTime?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, leconId, conceptTag, errorTag])
+  @@index([userId, isFrequent, lastSeenAt])
+  @@index([userId, nextReviewAt])
+  @@map("user_error_profiles")
+}
