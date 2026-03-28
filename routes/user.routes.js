@@ -1,48 +1,19 @@
 const express = require('express')
 const bcrypt = require('bcrypt')
-const fs = require('fs')
-const path = require('path')
 
 const prisma = require('../prisma/client')
 const authMiddleware = require('../middleware/auth.middleware')
 const { getActiveErrorProfiles, getDueReviewProfiles } = require('../services/lessonProgress.service')
 const { getAdaptiveRecommendation } = require('../services/adaptiveCours.service')
+const {
+  LEVELS,
+  loadNiveau,
+  findLecon,
+  getLeconMeta,
+} = require('../services/courseCatalog.service')
 
 const router = express.Router()
 router.use(authMiddleware)
-
-const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
-const DATA_DIR = path.join(__dirname, '..', 'data', 'cours')
-
-// Cache JSON cours pour eviter de relire les fichiers a chaque requete.
-const coursCache = new Map()
-
-function loadNiveau(niveau) {
-  const n = String(niveau || '').toUpperCase()
-  if (!LEVELS.includes(n)) throw new Error('Niveau invalide')
-  if (coursCache.has(n)) return coursCache.get(n)
-  const file = path.join(DATA_DIR, `${n}.json`)
-  const raw = fs.readFileSync(file, 'utf8')
-  const parsed = JSON.parse(raw)
-  coursCache.set(n, parsed)
-  return parsed
-}
-
-function findLecon(leconId) {
-  const id = String(leconId || '')
-  const niveau = id.split('-')[0]?.toUpperCase()
-  if (!LEVELS.includes(niveau)) return null
-  const lecons = loadNiveau(niveau)?.lecons || []
-  return lecons.find((l) => l.id === id) || null
-}
-
-function getLeconMeta(lecon) {
-  const phrases = lecon.phrasesCount ?? (Array.isArray(lecon.phrases) ? lecon.phrases.length : 0)
-  const exercices = lecon.exercicesCount ?? (Array.isArray(lecon.exercices) ? lecon.exercices.length : 0)
-  const duree = typeof lecon.duree === 'number' ? lecon.duree : 0
-  const mots = Array.isArray(lecon.mots) ? lecon.mots.length : 0
-  return { phrases, exercices, duree, mots }
-}
 
 function computeStreakFromIsoDays(isoDays) {
   const uniq = Array.from(new Set(isoDays)).filter(Boolean).sort().reverse()
@@ -160,7 +131,9 @@ router.get('/dashboard', async (req, res) => {
     const dernierNiveau = derniereProg ? derniereProg.leconId.split('-')[0].toUpperCase() : null
     const dernierNumero = derniereProg ? parseInt(derniereProg.leconId.split('-')[1], 10) || 1 : null
 
-    const next = progression.find((p) => p.leconsFaites < p.leconsTotal) || progression[0]
+    const next = progression.find((p) => p.leconsTotal > 0 && p.leconsFaites < p.leconsTotal)
+      || progression.find((p) => p.leconsTotal > 0)
+      || progression[0]
 
     res.json({
       progression,

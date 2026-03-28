@@ -2,6 +2,7 @@ const express = require('express')
 const router  = express.Router()
 const prisma  = require('../prisma/client')
 const authMiddleware = require('../middleware/auth.middleware')
+const modularSprechenRouter = require('./sprechen')
 
 // Toutes les routes Sprechen nécessitent d'être connecté
 router.use(authMiddleware)
@@ -62,9 +63,16 @@ router.post('/session', async (req, res) => {
         userId:    req.userId,
         partnerId: partnerId || null,
         niveau,
+        level:     niveau,
+        mode:      'training',
         score:     Math.min(100, Math.max(0, score)),
         duree:     duree || 0,
         exercices: exercices ? JSON.stringify(exercices) : null,
+        startedAt: new Date(),
+        transcript: [],
+        metrics: {},
+        servicesUsed: { llm: [], tts: [], stt: [] },
+        badgesEarned: [],
       }
     })
     res.status(201).json({ session })
@@ -102,5 +110,7 @@ router.get('/stats', async (req, res) => {
     res.status(500).json({ error: 'Erreur serveur' })
   }
 })
+
+router.use('/', modularSprechenRouter)
 
 module.exports = router

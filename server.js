@@ -27,10 +27,28 @@ const chatSocket     = require('./socket/chat.socket')
 const app    = express()
 const server = http.createServer(app)
 
+function getAllowedOrigins() {
+  const configured = process.env.CORS_ORIGINS
+    ?.split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean)
+
+  if (configured?.length) return configured
+
+  return [
+    'http://localhost',
+    'http://localhost:5173',
+    'capacitor://localhost',
+    'https://eam.vercel.app',
+  ]
+}
+
+const allowedOrigins = getAllowedOrigins()
+
 // ── Socket.io ─────────────────────────────────────────────
 const io = new Server(server, {
   cors: {
-    origin:      process.env.CORS_ORIGINS?.split(',') || ['http://localhost:5173'],
+    origin:      allowedOrigins,
     methods:     ['GET', 'POST'],
     credentials: true,
   },
@@ -43,7 +61,7 @@ chatSocket(io)
 
 // ── Middleware globaux ─────────────────────────────────────
 app.use(cors({
-  origin:      process.env.CORS_ORIGINS?.split(',') || ['http://localhost:5173'],
+  origin:      allowedOrigins,
   credentials: true,
 }))
 app.use(express.json({ limit: '5mb' }))

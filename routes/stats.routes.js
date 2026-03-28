@@ -1,37 +1,12 @@
 const express = require('express')
-const fs = require('fs')
-const path = require('path')
 
 const prisma = require('../prisma/client')
+const { LEVELS, loadNiveau, getLeconMeta } = require('../services/courseCatalog.service')
 
 const router = express.Router()
-
-const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
-const DATA_DIR = path.join(__dirname, '..', 'data', 'cours')
-
-// Cache memo for JSON course files and computed totals.
-const coursCache = new Map()
 let overviewCache = null
 let overviewCacheAt = 0
 const OVERVIEW_TTL_MS = 30_000
-
-function loadNiveau(niveau) {
-  const n = String(niveau || '').toUpperCase()
-  if (!LEVELS.includes(n)) throw new Error('Niveau invalide')
-  if (coursCache.has(n)) return coursCache.get(n)
-  const file = path.join(DATA_DIR, `${n}.json`)
-  const raw = fs.readFileSync(file, 'utf8')
-  const parsed = JSON.parse(raw)
-  coursCache.set(n, parsed)
-  return parsed
-}
-
-function countLessonMeta(lecon) {
-  const phrases = lecon.phrasesCount ?? (Array.isArray(lecon.phrases) ? lecon.phrases.length : 0)
-  const exercices = lecon.exercicesCount ?? (Array.isArray(lecon.exercices) ? lecon.exercices.length : 0)
-  const duree = typeof lecon.duree === 'number' ? lecon.duree : 0
-  return { phrases, exercices, duree }
-}
 
 function computeContentOverview() {
   const niveaux = {}
@@ -47,7 +22,7 @@ function computeContentOverview() {
     let ph = 0
     let min = 0
     for (const l of lecons) {
-      const m = countLessonMeta(l)
+      const m = getLeconMeta(l)
       ex += m.exercices
       ph += m.phrases
       min += m.duree

@@ -1,11 +1,13 @@
 const express = require('express')
-const fs = require('fs')
-const path = require('path')
-
 const router = express.Router()
 const prisma = require('../prisma/client')
 const authMiddleware = require('../middleware/auth.middleware')
 const { pickLessonVisual } = require('../data/cours/lessonVisuals')
+const {
+  LEVELS,
+  listLevelLessons,
+  findLecon,
+} = require('../services/courseCatalog.service')
 const {
   buildLevelUnlockMap,
   syncLessonProgression,
@@ -16,42 +18,13 @@ const {
 // Toutes les routes cours necessitent d'etre connecte
 router.use(authMiddleware)
 
-const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
-const DATA_DIR = path.join(__dirname, '..', 'data', 'cours')
-
-// Cache en memoire pour eviter de relire les JSON a chaque requete.
-const coursCache = new Map()
-
-function loadNiveau(niveau) {
-  const n = String(niveau || '').toUpperCase()
-  if (!LEVELS.includes(n)) throw new Error('Niveau invalide')
-  if (coursCache.has(n)) return coursCache.get(n)
-
-  const file = path.join(DATA_DIR, `${n}.json`)
-  const raw = fs.readFileSync(file, 'utf8')
-  const parsed = JSON.parse(raw)
-  coursCache.set(n, parsed)
-  return parsed
-}
-
 function listLecons(niveau) {
-  const data = loadNiveau(niveau)
-  const lecons = Array.isArray(data?.lecons) ? data.lecons : []
-
-  // Pour la liste: on renvoie les metadonnees + compteurs, pas les tableaux lourds.
-  return lecons.map((l) => {
-    const visual = pickLessonVisual(l.niveau || niveau, l.numero)
+  return listLevelLessons(niveau).map((lesson) => {
+    const visual = pickLessonVisual(lesson.niveau || niveau, lesson.numero)
     return {
-      id: l.id,
-      numero: l.numero,
-      niveau: l.niveau,
-      titre: l.titre,
-      description: l.description,
-      duree: l.duree,
-      phrases: l.phrasesCount ?? (Array.isArray(l.phrases) ? l.phrases.length : 0),
-      exercices: l.exercicesCount ?? (Array.isArray(l.exercices) ? l.exercices.length : 0),
-      imageUrl: l.imageUrl || visual?.url || null,
-      imageTheme: l.imageTheme || visual?.themeFr || null,
+      ...lesson,
+      imageUrl: lesson.imageUrl || visual?.url || null,
+      imageTheme: lesson.imageTheme || visual?.themeFr || null,
       illustration: visual,
     }
   })
@@ -164,8 +137,7 @@ router.get('/lecon/:leconId', async (req, res) => {
   }
 
   try {
-    const lecons = loadNiveau(niveauCode)?.lecons || []
-    const lecon = lecons.find(l => l.id === leconId)
+    const lecon = findLecon(leconId)
     if (!lecon) return res.status(404).json({ error: 'Lecon introuvable' })
     res.json({ lecon: enrichLessonForDetails(lecon) })
   } catch (err) {

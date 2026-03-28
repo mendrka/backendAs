@@ -659,6 +659,8 @@ function extractExpectedAnswer(exercise) {
       return exercise.texteAttendu || null
     case 'match':
       return JSON.stringify(exercise.pairs || [])
+    case 'open':
+      return exercise.reponse || null
     default:
       return null
   }
