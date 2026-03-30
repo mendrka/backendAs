@@ -27,28 +27,62 @@ const chatSocket     = require('./socket/chat.socket')
 const app    = express()
 const server = http.createServer(app)
 
-function getAllowedOrigins() {
-  const configured = process.env.CORS_ORIGINS
+function getConfiguredOrigins() {
+  return process.env.CORS_ORIGINS
     ?.split(',')
     .map((origin) => origin.trim())
     .filter(Boolean)
+}
 
-  if (configured?.length) return configured
+function getAllowedOrigins() {
+  const configured = getConfiguredOrigins()
 
   return [
+    ...(configured?.length ? configured : []),
     'http://localhost',
     'http://localhost:5173',
+    'http://127.0.0.1:5173',
     'capacitor://localhost',
+    'ionic://localhost',
     'https://eam.vercel.app',
+    'https://allemagne.netlify.app',
   ]
+    .filter(Boolean)
+    .filter((value, index, values) => values.indexOf(value) === index)
+}
+
+function isOriginAllowed(origin, allowedOrigins) {
+  if (!origin) return true
+  if (allowedOrigins.includes(origin)) return true
+
+  try {
+    const parsed = new URL(origin)
+    return parsed.protocol === 'https:' && parsed.hostname.endsWith('.netlify.app')
+  } catch {
+    return false
+  }
 }
 
 const allowedOrigins = getAllowedOrigins()
+const corsOptions = {
+  origin(origin, callback) {
+    if (isOriginAllowed(origin, allowedOrigins)) {
+      return callback(null, origin || true)
+    }
+    return callback(new Error(`CORS origin refused: ${origin || 'unknown'}`))
+  },
+  credentials: true,
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 204,
+}
+
+app.set('trust proxy', 1)
 
 // ── Socket.io ─────────────────────────────────────────────
 const io = new Server(server, {
   cors: {
-    origin:      allowedOrigins,
+    origin:      (origin, callback) => corsOptions.origin(origin, callback),
     methods:     ['GET', 'POST'],
     credentials: true,
   },
@@ -60,10 +94,8 @@ sprechenSocket(io)
 chatSocket(io)
 
 // ── Middleware globaux ─────────────────────────────────────
-app.use(cors({
-  origin:      allowedOrigins,
-  credentials: true,
-}))
+app.use(cors(corsOptions))
+app.options(/.*/, cors(corsOptions))
 app.use(express.json({ limit: '5mb' }))
 app.use(express.urlencoded({ extended: true }))
 
@@ -73,15 +105,31 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // ── Health check ──────────────────────────────────────────
-app.get('/health', (req, res) => {
-  res.json({
+function buildHealthPayload() {
+  return {
     status:  'OK',
     service: 'EAM Backend',
     version: '1.0.0',
     env:     process.env.NODE_ENV || 'development',
     uptime:  Math.round(process.uptime()),
     db:      getDbStatus(),
+    origins: allowedOrigins,
+  }
+}
+
+app.get('/', (req, res) => {
+  res.json({
+    ...buildHealthPayload(),
+    message: 'Backend running. Use /health or /api/*.',
   })
+})
+
+app.get('/health', (req, res) => {
+  res.json(buildHealthPayload())
+})
+
+app.get('/api/health', (req, res) => {
+  res.json(buildHealthPayload())
 })
 
 // ── Routes API ────────────────────────────────────────────
