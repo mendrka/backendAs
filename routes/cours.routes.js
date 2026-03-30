@@ -7,6 +7,8 @@ const {
   LEVELS,
   listLevelLessons,
   findLecon,
+  getLessonIdAliases,
+  toLegacyLessonId,
 } = require('../services/courseCatalog.service')
 const {
   buildLevelUnlockMap,
@@ -100,23 +102,36 @@ router.get('/:niveau/lecons', async (req, res) => {
     const unlockMap = await buildLevelUnlockMap({ userId: req.userId, niveau })
 
     const progMap = progressions.reduce((acc, p) => {
-      acc[p.leconId] = normalizeProgression(p)
+      const normalized = normalizeProgression(p)
+      getLessonIdAliases(p.leconId).forEach((alias) => {
+        acc[alias] = normalized
+      })
       return acc
     }, {})
 
+    const unlockLookup = new Map()
+    unlockMap.forEach((state, lessonId) => {
+      getLessonIdAliases(lessonId).forEach((alias) => {
+        unlockLookup.set(alias, state)
+      })
+    })
+
     const result = lecons.map((l) => ({
       ...l,
-      complete: progMap[l.id]?.complete || false,
-      score: progMap[l.id]?.score ?? null,
-      xpEarned: progMap[l.id]?.xpEarned ?? 0,
-      xpRequired: progMap[l.id]?.xpRequired ?? 100,
-      masteryScore: progMap[l.id]?.masteryScore ?? 0,
-      errorRate: progMap[l.id]?.errorRate ?? 0,
-      revisionRequired: progMap[l.id]?.revisionRequired ?? false,
-      unlockedAt: progMap[l.id]?.unlockedAt ?? null,
-      lastAttemptAt: progMap[l.id]?.lastAttemptAt ?? null,
-      unlocked: unlockMap.get(l.id)?.unlocked ?? false,
-      lockedReason: unlockMap.get(l.id)?.lockedReason ?? null,
+      sourceId: l.id,
+      canonicalId: l.id,
+      id: toLegacyLessonId(l.id),
+      complete: progMap[l.id]?.complete || progMap[toLegacyLessonId(l.id)]?.complete || false,
+      score: progMap[l.id]?.score ?? progMap[toLegacyLessonId(l.id)]?.score ?? null,
+      xpEarned: progMap[l.id]?.xpEarned ?? progMap[toLegacyLessonId(l.id)]?.xpEarned ?? 0,
+      xpRequired: progMap[l.id]?.xpRequired ?? progMap[toLegacyLessonId(l.id)]?.xpRequired ?? 100,
+      masteryScore: progMap[l.id]?.masteryScore ?? progMap[toLegacyLessonId(l.id)]?.masteryScore ?? 0,
+      errorRate: progMap[l.id]?.errorRate ?? progMap[toLegacyLessonId(l.id)]?.errorRate ?? 0,
+      revisionRequired: progMap[l.id]?.revisionRequired ?? progMap[toLegacyLessonId(l.id)]?.revisionRequired ?? false,
+      unlockedAt: progMap[l.id]?.unlockedAt ?? progMap[toLegacyLessonId(l.id)]?.unlockedAt ?? null,
+      lastAttemptAt: progMap[l.id]?.lastAttemptAt ?? progMap[toLegacyLessonId(l.id)]?.lastAttemptAt ?? null,
+      unlocked: unlockLookup.get(l.id)?.unlocked ?? unlockLookup.get(toLegacyLessonId(l.id))?.unlocked ?? false,
+      lockedReason: unlockLookup.get(l.id)?.lockedReason ?? unlockLookup.get(toLegacyLessonId(l.id))?.lockedReason ?? null,
     }))
 
     // Compat: le front attend un tableau

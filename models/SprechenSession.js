@@ -44,6 +44,10 @@ function normalizeSession(session) {
   }
 }
 
+function isValidObjectId(id) {
+  return /^[a-f0-9]{24}$/i.test(String(id || ''))
+}
+
 function buildMetricsFromTranscript(transcript, existingMetrics = {}) {
   const metrics = {
     ...DEFAULT_SESSION_METRICS,
@@ -98,6 +102,7 @@ async function createSession(payload) {
 }
 
 async function findByIdForUser(id, userId) {
+  if (!isValidObjectId(id) || !isValidObjectId(userId)) return null
   return normalizeSession(await prisma.sprechenSession.findFirst({ where: { id, userId } }))
 }
 

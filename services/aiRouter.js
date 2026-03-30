@@ -128,17 +128,6 @@ class AIRouter {
       }
     }
 
-    if (this.checkQuota('gemini') && this.isServiceHealthy('gemini')) {
-      try {
-        const content = await geminiService.chat([{ role: 'user', content: prompt }], '')
-        this.consumeQuota('gemini')
-        this.markServiceOk('gemini')
-        return { content, service: 'gemini' }
-      } catch (error) {
-        this.markServiceError('gemini', error)
-      }
-    }
-
     if (this.checkQuota('openrouter') && this.isServiceHealthy('openrouter')) {
       try {
         const content = await openRouterService.chat([{ role: 'user', content: prompt }], '', 'smart')
@@ -147,6 +136,17 @@ class AIRouter {
         return { content, service: 'openrouter_smart' }
       } catch (error) {
         this.markServiceError('openrouter', error)
+      }
+    }
+
+    if (this.checkQuota('gemini') && this.isServiceHealthy('gemini')) {
+      try {
+        const content = await geminiService.chat([{ role: 'user', content: prompt }], '')
+        this.consumeQuota('gemini')
+        this.markServiceOk('gemini')
+        return { content, service: 'gemini' }
+      } catch (error) {
+        this.markServiceError('gemini', error)
       }
     }
 

@@ -519,11 +519,48 @@ function listLevelLessons(niveau) {
   }))
 }
 
+function parseLessonId(leconId) {
+  const normalized = String(leconId || '').toLowerCase().trim()
+  const match = normalized.match(/^([a-z]\d)-0*(\d+)$/)
+  if (!match) return null
+
+  return {
+    normalized,
+    prefix: match[1],
+    number: Number.parseInt(match[2], 10),
+  }
+}
+
+function toLegacyLessonId(leconId) {
+  const parsed = parseLessonId(leconId)
+  if (!parsed) return String(leconId || '').toLowerCase().trim()
+  return `${parsed.prefix}-${parsed.number}`
+}
+
+function getLessonIdAliases(leconId) {
+  const normalized = String(leconId || '').toLowerCase().trim()
+  const parsed = parseLessonId(normalized)
+
+  if (!parsed) {
+    return normalized ? [normalized] : []
+  }
+
+  return [
+    normalized,
+    `${parsed.prefix}-${String(parsed.number).padStart(3, '0')}`,
+    `${parsed.prefix}-${parsed.number}`,
+  ].filter((value, index, values) => values.indexOf(value) === index)
+}
+
 function findLecon(leconId) {
-  const id = String(leconId || '').toLowerCase()
-  const niveau = id.split('-')[0]?.toUpperCase()
+  const aliases = getLessonIdAliases(leconId)
+  const niveau = aliases[0]?.split('-')[0]?.toUpperCase()
   if (!LEVELS.includes(niveau)) return null
-  return toArray(loadNiveau(niveau)?.lecons).find((lesson) => lesson.id === id) || null
+  return (
+    toArray(loadNiveau(niveau)?.lecons).find((lesson) =>
+      getLessonIdAliases(lesson.id).some((candidate) => aliases.includes(candidate))
+    ) || null
+  )
 }
 
 function getLeconMeta(lecon) {
@@ -547,6 +584,8 @@ module.exports = {
   loadNiveau,
   listLevelLessons,
   findLecon,
+  getLessonIdAliases,
+  toLegacyLessonId,
   getLeconMeta,
   getLessonIndex,
   getLessonIds,
