@@ -5,6 +5,7 @@ const jwt      = require('jsonwebtoken')
 const { body, validationResult } = require('express-validator')
 const prisma   = require('../prisma/client')
 const authMiddleware = require('../middleware/auth.middleware')
+const { resolveUserRole } = authMiddleware
 const { ensureUserStats } = require('../services/gamification.service')
 
 const SALT_ROUNDS = 12
@@ -14,7 +15,7 @@ const JWT_EXPIRES = process.env.JWT_EXPIRES_IN || '7d'
 // ── Helper : créer le JWT ──────────────────────────────────
 function makeToken(user) {
   return jwt.sign(
-    { userId: user.id, prenom: user.prenom, nom: user.nom, email: user.email },
+    { userId: user.id, prenom: user.prenom, nom: user.nom, email: user.email, role: resolveUserRole(user) },
     JWT_SECRET,
     { expiresIn: JWT_EXPIRES }
   )
@@ -23,7 +24,10 @@ function makeToken(user) {
 // ── Helper : formater la réponse user (sans password) ──────
 function formatUser(user) {
   const { password, ...safe } = user
-  return safe
+  return {
+    ...safe,
+    role: resolveUserRole(user),
+  }
 }
 
 // ── POST /api/auth/register ────────────────────────────────

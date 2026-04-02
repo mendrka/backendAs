@@ -18,6 +18,7 @@ const userRoutes     = require('./routes/user.routes')
 const progressionRoutes = require('./routes/progression.routes')
 const statsRoutes    = require('./routes/stats.routes')
 const gamificationRoutes = require('./routes/gamification.routes')
+const adminRoutes    = require('./routes/admin.routes')
 
 // ── Sockets ───────────────────────────────────────────────
 const sprechenSocket = require('./socket/sprechen.socket')
@@ -141,6 +142,7 @@ app.use('/api/chat',     chatRoutes)
 app.use('/api/user',     userRoutes)
 app.use('/api/stats',    statsRoutes)
 app.use('/api/gamification', gamificationRoutes)
+app.use('/api/admin', adminRoutes)
 // Compat: anciens appels front /api/progression/...
 app.use('/api/progression', progressionRoutes)
 

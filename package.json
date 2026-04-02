@@ -14,6 +14,7 @@
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:seed": "node prisma/seed.js",
+    "admin:promote": "node scripts/promote-admin.js",
     "db:import-sqlite": "node prisma/migrateSqliteToMongo.js",
     "db:import-sqlite:reset": "node prisma/migrateSqliteToMongo.js --reset",
     "db:studio": "prisma studio",
